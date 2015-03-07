@@ -1,0 +1,31 @@
+input {
+  height: 2em;
+  font-size: 1em;
+  padding: 0 0.2em;
+}
+
+button {
+  cursor: pointer;
+}
+
+.fetch-btn {
+  height: 2em;
+  font-size: 1.1em;
+}
+
+.error {
+  color: red;
+}
+
+.lines {
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.tag-highlighter.highlighted {
+  font-weight: bold;
+}
+
+.html-tag.highlighted {
+  background: yellow;
+}

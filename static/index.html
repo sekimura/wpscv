@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" >
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Page Source Code Viewer : @sekimura</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-controller="FetcherCtrl">
+  <h1>Web Page Source Code Viewer : @sekimura</h1>
+  <form name="urlInputForm">
+    <div>Enter Web Page URL:</div>
+    <input ng-model="url" type="url" required>
+    <button class="fetch-btn" ng-click="fetch()" ng-disabled="urlInputForm.$invalid">Fetch</button>
+  </form>
+  <div ng-if="error" class="error">
+    <p ng-bind="error"></p>
+  </div>
+  <div ng-if="fetching">
+    <p>Fetching...</p>
+  </div>
+  <div ng-if="result" class="result">
+    <h2>Result</h2>
+    <p>click buttons to highlight tags</p>
+    <div class="highlighter-container">
+      <button ng-class="{'highlighted': highlighted == stat.Name}" 
+       class="tag-highlighter" ng-repeat="stat in result.Summary | orderBy:['Count', 'Name']:true" ng-bind="stat.Name + '(' + stat.Count + ')'" ng-click="highlight(stat.Name)"></button>
+    </div>
+    <div class="lines-container">
+      <ol id="source" class="lines">
+        <li class="line" ng-repeat="line in result.Lines track by $index">
+          <span ng-switch on="line.Type">
+            <span ng-switch-when="Text"><span ng-bind="line.Text"></span></span>
+            <span ng-switch-when="Tag">&lt;<span class="html-tag" ng-class="{'highlighted': highlighted == line.Tagname}" ng-bind="line.Tagname"></span>{{ (line.Attr.length ? ' ' + line.Attr : '')}}&gt;</span>
+            <span ng-switch-when="EndTag">&lt;/<span class="html-tag" ng-class="{'highlighted': highlighted == line.Tagname}" ng-bind="line.Tagname"></span>&gt;</span>
+            <span ng-switch-when="Text"><span ng-bind="line.Text"></span></span>
+            <span ng-switch-when="Comment"><span ng-bind="line.Text"></span></span>
+            <span ng-switch-when="Doctype"><span ng-bind="line.Text"></span></span>
+          </span>
+        </li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>
