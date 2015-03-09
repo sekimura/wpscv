@@ -95,7 +95,8 @@ func fetch(u string) (*wpscv.FetchResult, error) {
 	}
 	defer res.Body.Close()
 
-	if !strings.HasPrefix(res.Header.Get("Content-Type"), "text/html") {
+	types := strings.Split(res.Header.Get("Content-Type"), ";")
+	if strings.ToLower(types[0]) != "text/html" {
 		log.Println(res.Header.Get("Content-Type"))
 		return nil, fmt.Errorf("Invalid Content-Type")
 	}
