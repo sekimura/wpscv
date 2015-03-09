@@ -1,18 +1,14 @@
 {
-	"ImportPath": "github.com/sekimura/wpscv",
+	"ImportPath": "github.com/sekimura/wpscv/client",
 	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
-			"ImportPath": "github.com/gopherjs/go-angularjs",
-			"Rev": "38172bbb2479dd746ee05b4226462f203445bded"
-		},
-		{
 			"ImportPath": "github.com/gopherjs/gopherjs/js",
-			"Rev": "544f0b0b6275a56e429f1f18c12488ea13802755"
+			"Rev": "9cd1448485d48f369dd4e5b908da59089c2c1f14"
 		},
 		{
-			"ImportPath": "golang.org/x/net/html",
-			"Rev": "b6fdb7d8a4ccefede406f8fe0f017fb58265054c"
+			"ImportPath": "github.com/sekimura/go-angularjs",
+			"Rev": "8522eb04631db0f8cc22efe8c903e9e3d2847c56"
 		},
 		{
 			"ImportPath": "honnef.co/go/js/util",

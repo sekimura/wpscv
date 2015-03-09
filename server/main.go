@@ -11,6 +11,7 @@ import (
 	"os"
 	"strings"
 
+	wpscv "github.com/sekimura/wpscv/common"
 	"golang.org/x/net/html"
 )
 
@@ -26,7 +27,7 @@ func attrString(attr []html.Attribute) string {
 	return buf.String()
 }
 
-func flatten(r io.Reader) (lines []Line, stats []TagStat) {
+func flatten(r io.Reader) (lines []wpscv.Line, stats []wpscv.TagStat) {
 	m := make(map[string]int)
 	z := html.NewTokenizer(r)
 	for {
@@ -41,34 +42,34 @@ func flatten(r io.Reader) (lines []Line, stats []TagStat) {
 		t := z.Token()
 		switch tt {
 		case html.DoctypeToken:
-			l := Line{
+			l := wpscv.Line{
 				Type: "Text",
 				Text: "<!DOCTYPE " + t.Data + ">",
 			}
 			lines = append(lines, l)
 		case html.CommentToken:
-			l := Line{
+			l := wpscv.Line{
 				Type: "Text",
 				Text: "<!--" + t.Data + "-->",
 			}
 			lines = append(lines, l)
 		case html.SelfClosingTagToken, html.StartTagToken:
 			m[t.Data]++
-			l := Line{
+			l := wpscv.Line{
 				Type:    "Tag",
 				Attr:    attrString(t.Attr),
 				Tagname: t.Data,
 			}
 			lines = append(lines, l)
 		case html.EndTagToken:
-			l := Line{
+			l := wpscv.Line{
 				Type:    "EndTag",
 				Tagname: t.Data,
 			}
 			lines = append(lines, l)
 		case html.TextToken:
 			if len(strings.Fields(t.Data)) != 0 {
-				l := Line{
+				l := wpscv.Line{
 					Type: "Text",
 					Text: t.Data,
 				}
@@ -78,7 +79,7 @@ func flatten(r io.Reader) (lines []Line, stats []TagStat) {
 	}
 
 	for k, v := range m {
-		stats = append(stats, TagStat{
+		stats = append(stats, wpscv.TagStat{
 			Name:  k,
 			Count: v,
 		})
@@ -86,14 +87,14 @@ func flatten(r io.Reader) (lines []Line, stats []TagStat) {
 	return
 }
 
-func fetch(u string) (*FetchResult, error) {
+func fetch(u string) (*wpscv.FetchResult, error) {
 	res, err := http.Get(u)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
-	fr := &FetchResult{}
+	fr := &wpscv.FetchResult{}
 	lines, stats := flatten(res.Body)
 	fr.Lines = lines
 	fr.Summary = stats

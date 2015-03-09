@@ -6,10 +6,11 @@ import (
 	"net/url"
 
 	"github.com/sekimura/go-angularjs"
+	wpscv "github.com/sekimura/wpscv/common"
 	"honnef.co/go/js/xhr"
 )
 
-func doFetch(u string, onSuccess func(*FetchResult), onError func(error)) {
+func doFetch(u string, onSuccess func(*wpscv.FetchResult), onError func(error)) {
 	parsed, err := url.Parse(u)
 	if err != nil {
 		onError(err)
@@ -29,7 +30,7 @@ func doFetch(u string, onSuccess func(*FetchResult), onError func(error)) {
 			onError(fmt.Errorf("Failed to get result from the API endpoint: %v", msg))
 			return
 		}
-		var fr FetchResult
+		var fr wpscv.FetchResult
 		buf := []byte(req.Response.String())
 		if err := json.Unmarshal(buf, &fr); err != nil {
 			onError(err)
@@ -44,7 +45,7 @@ func FetcherCtrl(scope *angularjs.Scope) {
 	scope.Set("url", "http://sekimura.org")
 	scope.Set("highlighted", nil)
 
-	onSuccess := func(fr *FetchResult) {
+	onSuccess := func(fr *wpscv.FetchResult) {
 		scope.Set("fetching", false)
 		scope.Apply(func() {
 			scope.Set("result", fr)

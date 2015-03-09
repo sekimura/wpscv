@@ -1,4 +1,4 @@
-package main
+package common
 
 type TagStat struct {
 	Name  string `json:"name"`

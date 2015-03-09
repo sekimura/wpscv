@@ -1,15 +1,15 @@
-all: server appjs
+all: server client
 
-server: server.go model.go
-	@go build -o server server.go model.go
-	@touch $@
+server: server/main.go common/types.go
+	@(cd server && go build -o server main.go)
+	@touch server/server
 
-appjs: app/app.go model.go
-	@gopherjs build app/app.go model.go -m -o static/app.js
+client: client/app.go common/types.go
+	@(cd client && gopherjs build app.go -m -o ../static/app.js)
 	@touch static/app.js
 	@touch static/app.js.map
 
 clean:
-	@rm -rf server static/app.js static/app.js.map
+	@rm -rf server/server static/app.js static/app.js.map
 
-.PHONY: clean appjs
+.PHONY: clean server client
