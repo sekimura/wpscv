@@ -42,13 +42,13 @@ func flatten(r io.Reader) (lines []Line, stats []TagStat) {
 		switch tt {
 		case html.DoctypeToken:
 			l := Line{
-				Type: "Doctype",
+				Type: "Text",
 				Text: "<!DOCTYPE " + t.Data + ">",
 			}
 			lines = append(lines, l)
 		case html.CommentToken:
 			l := Line{
-				Type: "Comment",
+				Type: "Text",
 				Text: "<!--" + t.Data + "-->",
 			}
 			lines = append(lines, l)

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/gopherjs/go-angularjs"
+	"github.com/sekimura/go-angularjs"
 	"honnef.co/go/js/xhr"
 )
 
@@ -73,7 +73,24 @@ func FetcherCtrl(scope *angularjs.Scope) {
 	})
 }
 
+func FetchResultLineDirective() map[string]interface{} {
+	m := map[string]interface{}{
+		"restrict": "E",
+		"scope": map[string]string{
+			"line":        "=",
+			"highlighted": "=",
+		},
+		"template": `
+			<span ng-if="line.Type=='Text'"><span ng-bind="line.Text"></span></span>
+			<span ng-if="line.Type=='Tag'">&lt;<span class="html-tag" ng-class="{'highlighted': highlighted == line.Tagname}" ng-bind="line.Tagname"></span>{{ (line.Attr.length ? ' ' + line.Attr : '')}}&gt;</span>
+			<span ng-if="line.Type=='EndTag'">&lt;/<span class="html-tag" ng-class="{'highlighted': highlighted == line.Tagname}" ng-bind="line.Tagname"></span>&gt;</span>
+		`,
+	}
+	return m
+}
+
 func main() {
 	app := angularjs.NewModule("myapp", nil, nil)
 	app.NewController("FetcherCtrl", FetcherCtrl)
+	app.NewDirective("fetchResultLine", FetchResultLineDirective)
 }

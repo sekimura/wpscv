@@ -1,5 +1,17 @@
+.outer {
+  width: 100%;
+}
+
+.inner {
+  position: relative;
+  max-width: 960px;
+  padding: 20px 10px;
+  margin: 0 auto;
+}
+
 input {
   height: 2em;
+  width: 80%;
   font-size: 1em;
   padding: 0 0.2em;
 }
@@ -10,6 +22,7 @@ button {
 
 .fetch-btn {
   height: 2em;
+  width: 15%;
   font-size: 1.1em;
 }
 
