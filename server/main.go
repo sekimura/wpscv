@@ -27,6 +27,7 @@ func attrString(attr []html.Attribute) string {
 	return buf.String()
 }
 
+// flatten HTML tokens to lines with tag usage data
 func flatten(r io.Reader) (lines []wpscv.Line, stats []wpscv.TagStat) {
 	m := make(map[string]int)
 	z := html.NewTokenizer(r)
