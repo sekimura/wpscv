@@ -95,6 +95,9 @@ func fetch(u string) (*wpscv.FetchResult, error) {
 	}
 	defer res.Body.Close()
 
+	if res.Header.Get("Content-Type") != "text/html" {
+		return nil, fmt.Errorf("Invalid Content-Type")
+	}
 	fr := &wpscv.FetchResult{}
 	lines, stats := flatten(res.Body)
 	fr.Lines = lines
@@ -120,6 +123,7 @@ func fetcherHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println("Fetching Success: ", u)
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(b)
 }
 
